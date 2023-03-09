@@ -1,0 +1,104 @@
+{
+  ".svelte-kit/build/index.js": {
+    "file": "index.js",
+    "src": ".svelte-kit/build/index.js",
+    "isEntry": true,
+    "imports": [
+      "_index.js",
+      "_index2.js"
+    ],
+    "dynamicImports": [
+      ".svelte-kit/build/hooks.js"
+    ]
+  },
+  "src/routes/+layout.svelte": {
+    "file": "entries/pages/_layout.svelte.js",
+    "src": "src/routes/+layout.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_layout-000644b3.css"
+    ]
+  },
+  "node_modules/@sveltejs/kit/src/runtime/components/error.svelte": {
+    "file": "entries/fallbacks/error.svelte.js",
+    "src": "node_modules/@sveltejs/kit/src/runtime/components/error.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "src/routes/+page.svelte": {
+    "file": "entries/pages/_page.svelte.js",
+    "src": "src/routes/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js",
+      "_Movie.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page-4b91f9c8.css"
+    ],
+    "assets": [
+      "_app/immutable/assets/sun-b6fce056.svg",
+      "_app/immutable/assets/moon-013bc9f4.svg"
+    ]
+  },
+  "src/routes/+page.ts": {
+    "file": "entries/pages/_page.ts.js",
+    "src": "src/routes/+page.ts",
+    "isEntry": true
+  },
+  "src/routes/detail/+page.svelte": {
+    "file": "entries/pages/detail/_page.svelte.js",
+    "src": "src/routes/detail/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js"
+    ]
+  },
+  "src/routes/detail/+page.ts": {
+    "file": "entries/pages/detail/_page.ts.js",
+    "src": "src/routes/detail/+page.ts",
+    "isEntry": true
+  },
+  "src/routes/detail/[slug]/+page.svelte": {
+    "file": "entries/pages/detail/_slug_/_page.svelte.js",
+    "src": "src/routes/detail/[slug]/+page.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index.js",
+      "_Movie.js"
+    ],
+    "css": [
+      "_app/immutable/assets/_page-ef962e6a.css"
+    ]
+  },
+  "src/routes/detail/[slug]/+page.ts": {
+    "file": "entries/pages/detail/_slug_/_page.ts.js",
+    "src": "src/routes/detail/[slug]/+page.ts",
+    "isEntry": true,
+    "imports": [
+      "_index2.js"
+    ]
+  },
+  "_index.js": {
+    "file": "chunks/index.js"
+  },
+  "_index2.js": {
+    "file": "chunks/index2.js"
+  },
+  "_Movie.js": {
+    "file": "chunks/Movie.js",
+    "imports": [
+      "_index.js"
+    ]
+  },
+  ".svelte-kit/build/hooks.js": {
+    "file": "chunks/hooks.js",
+    "src": ".svelte-kit/build/hooks.js",
+    "isDynamicEntry": true
+  }
+}

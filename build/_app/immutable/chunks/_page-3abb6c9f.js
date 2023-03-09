@@ -1,0 +1,1 @@
+import{H as t}from"./control-ba37bfb4.js";function e(o,r){return new t(o,r)}const n=({params:o})=>{if(o.slug)return{id:o.slug};throw e(404,"Not found")},u=Object.freeze(Object.defineProperty({__proto__:null,load:n},Symbol.toStringTag,{value:"Module"}));export{u as _,n as l};
