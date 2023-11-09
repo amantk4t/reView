@@ -99,7 +99,9 @@ html.dark {
 .source-scripts-common-page-container-_Container_blocker_2Ph {
   background: #ff4400 !important;
 }
-
+.text-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
 .html5-video-container,
 .html5-main-video-container,
 video {

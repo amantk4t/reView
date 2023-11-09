@@ -71,7 +71,7 @@
     >
       <div class="relative w-full h-full">
         <iframe
-          title={video.name}
+          title={video?.name}
           src={`https://www.youtube.com/embed/${video.key}?autoplay=1&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3`}
           frameborder="0"
           allowfullscreen
