@@ -98,7 +98,7 @@
 		</nav>
 		<div class="flex items-center gap-3">
 			<button
-				class="bg-gradient-to-br from-orange-500 via-red-500 to-transparent bg-clip-text text-transparent font-bold"
+				class="bg-gradient-to-br from-orange-500 to-red-500 bg-clip-text text-transparent font-bold"
 			>
 				Login
 			</button>
@@ -109,7 +109,7 @@
 			<h2 class="text-center text-5xl font-bold text-white font-serif">
 				Welcome to Re-view Movies
 			</h2>
-			<p class="text-center leading-6">
+			<p class="text-center text-gray-200 leading-6">
 				Search and get a preview of more than <span class="text-orange-500">1.6 million</span> movies.
 				Find trailers, read reviews, and discover what other people are saying about your favorite films.
 			</p>
@@ -132,15 +132,15 @@
 				</svg>
 				<input
 					on:keyup={lookUpMovies}
+					bind:value={query}
 					placeholder="What would you like to see?"
 					type="text"
-					bind:value={query}
 					class="py-3 pl-12 pr- w-full dark:bg-gray-900 rounded-full focus-visible:outline-none focus-visible:shadow-lg"
 				/>
 			</div>
 			{#if lookUpResults.length}
 				<div
-					class="grid justify-items-center bg-white dark:text-white dark:bg-gray-900/90 relative -top-4 pt-3 pb-2 w-[30rem] px-2 h-60 overflow-y-auto"
+					class="grid justify-items-center bg-white dark:text-white dark:bg-gray-900/90 relative -top-5 pt-4 rounded-b-lg pb-2 w-[30rem] px-2 h-60 overflow-y-auto overflow-x-hidden"
 				>
 					{#if lookingUp}
 						<div>
@@ -149,14 +149,14 @@
 					{:else}
 						{#each lookUpResults as result}
 							<a
-								href="/detail/{result.id}"
+								href="/detail/{result.title ? 'movie' : 'tv'}/{result.id}"
 								role="button"
 								tabindex="0"
 								class="flex items-center gap-2 w-full text-gray-800 dark:text-gray-200 hover:bg-gray-500/40 dark:hover:bg-gray-950/40 rounded-lg p-2"
 							>
 								{#if result?.backdrop_path}
 									<img
-										class="w-16 h-16 object-cover text-sm"
+										class="w-16 h-16 object-cover text-sm rounded-md"
 										src={`https://image.tmdb.org/t/p/w500${result?.backdrop_path}`}
 										alt={result.title}
 									/>
@@ -173,11 +173,11 @@
 										<span class="text-xs font-light"
 											>{result?.release_date || result.first_air_date || 'N/A'}</span
 										>
+										<span
+											class="text-right uppercase text-xs bg-gray-100 text-gray-800 font-semibold py-1 rounded-full px-2"
+											>{result?.media_type}</span
+										>
 										<div>
-											<span
-												class="text-right uppercase text-xs bg-gray-100 text-gray-800 font-semibold py-1 rounded-full px-2"
-												>{result?.media_type}</span
-											>
 											<span class="flex gap-2">
 												<svg
 													viewBox="0 0 24 24"
@@ -213,17 +213,62 @@
 		font-family: 'Rubik Distressed', cursive !important;
 	}
 
-	main::before {
-		content: '';
+	main {
+		/* content: '';
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: 100%;
-		opacity: 0.2; /* Adjust the opacity value as needed */
-		background: #0006 url($lib/images/background.jpg) fixed;
-		background-blend-mode: overlay;
+		opacity: 0.2; Adjust the opacity value as needed */
+		background-image: repeating-linear-gradient(
+				90deg,
+				rgba(140, 140, 140, 0.1) 0px,
+				rgba(140, 140, 140, 0.1) 1px,
+				transparent 1px,
+				transparent 60px
+			),
+			repeating-linear-gradient(
+				0deg,
+				rgba(140, 140, 140, 0.1) 0px,
+				rgba(140, 140, 140, 0.1) 1px,
+				transparent 1px,
+				transparent 60px
+			),
+			repeating-linear-gradient(
+				0deg,
+				rgba(140, 140, 140, 0.1) 0px,
+				rgba(140, 140, 140, 0.1) 1px,
+				transparent 1px,
+				transparent 20px
+			),
+			repeating-linear-gradient(
+				90deg,
+				rgba(140, 140, 140, 0.1) 0px,
+				rgba(140, 140, 140, 0.1) 1px,
+				transparent 1px,
+				transparent 20px
+			),
+			linear-gradient(90deg, hsl(208, 100%, 22%), hsl(208, 100%, 22%));
+		/* background: #0006 url($lib/images/background.jpg) fixed; */
+		/* background-blend-mode: overlay; */
 		background-position: center;
 		background-size: cover;
+	}
+
+	*::-webkit-scrollbar {
+		/* Customize the scrollbar for WebKit browsers */
+		width: 5px;
+	}
+
+	*::-webkit-scrollbar-track {
+		/* Customize the track */
+		background-color: #f1f1f1;
+	}
+
+	*::-webkit-scrollbar-thumb {
+		/* Customize the thumb */
+		background-color: #888;
+		border-radius: 5px;
 	}
 </style>

@@ -24,7 +24,7 @@
 		loading = true;
 		const response = await getPopularMovies();
 		loading = false;
-		console.log(response);
+		console.log('Movies', response);
 		resData = { ...response.data };
 		movies = [...response.data.results];
 	};
@@ -33,7 +33,7 @@
 		loading = true;
 		const response = await getPopularSeries();
 		loading = false;
-		console.log(response);
+		console.log('Series', response);
 		resData = { ...response.data };
 		movies = [...response.data.results];
 	};
@@ -77,8 +77,7 @@
 				console.log('Url', url !== '' && url.indexOf('type=') !== -1);
 				const encodedText = url.substring(startIndex + queryParam.length);
 				const decodedText = decodeURIComponent(encodedText);
-				console.log('Decoded', decodedText);
-				if (decodedText === 'movies') await fetchMovies();
+				if (decodedText === `'movies'`) await fetchMovies();
 				else await fetchSeries();
 			}
 		} else fetchMovies();

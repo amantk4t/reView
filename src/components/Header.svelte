@@ -4,22 +4,42 @@
 	import moon from '$lib/icons/moon.svg';
 	import filterIcon from '$lib/icons/filter.svg';
 	import Preview from './Preview.svelte';
-	import { getPopularMovies } from '../services/Movies.service';
+	import { getPopularMovies, getPopularSeries, searchMultiple } from '../services/Movies.service';
+	import { page } from '$app/stores';
+	import DotLoader from '../components/DotLoader.svelte';
+
 	export let dark = false;
+
 	const dispatch = createEventDispatcher();
+
+	let lookUpResults: any = [];
 	let searchQuery = '';
 	let searchFilters: any = [];
 	let movies: any = [];
 	let scrollInterval: number;
 	let scrollPosition: any = 0;
-
+	$: url = $page.url.search;
 	$: filter = {
 		adult: false
 	};
 	$: viewFilter = false;
+	$: lookingUp = false;
 
 	const toggleFilter = () => {
 		viewFilter = !viewFilter;
+	};
+
+	const lookUpMovies = async (ev: any) => {
+		lookingUp = true;
+		const res = await searchMultiple(searchQuery);
+		lookUpResults = res.data.results?.filter(
+			(res: any) => res.media_type === 'tv' || res.media_type === 'movie'
+		);
+		lookingUp = false;
+		console.log('lookup res', lookUpResults);
+		if (ev.key === 'Enter') {
+			dispatch('search', searchQuery);
+		}
 	};
 
 	const scroll = () => {
@@ -43,8 +63,27 @@
 	};
 
 	onMount(async () => {
-		const res = await getPopularMovies();
-		movies = res.data.results;
+		if (url !== '' && url.indexOf('type=') !== -1) {
+			const queryParam = 'type=';
+			const startIndex = url.indexOf(queryParam);
+			if (startIndex !== -1) {
+				console.log('Url', url !== '' && url.indexOf('type=') !== -1);
+				const encodedText = url.substring(startIndex + queryParam.length);
+				const decodedText = decodeURIComponent(encodedText);
+				console.log('Decoded', decodedText);
+				if (decodedText === `'movies'`) {
+					const res = await getPopularMovies();
+					movies = res.data.results;
+				} else {
+					const res = await getPopularSeries();
+					movies = res.data.results;
+				}
+			}
+		} else {
+			const res = await getPopularMovies();
+			const res2 = await getPopularSeries();
+			movies = [...res.data.results, ...res2.data.results];
+		}
 
 		scrollInterval = setInterval(() => {
 			scroll();
@@ -73,17 +112,17 @@
 					</span>
 				{/each}
 			</div>
-			<section class="flex gap-2 items-center">
-				<div class="relative">
+			<section class="flex gap-2 items-center relative">
+				<div class="relative z-10">
 					<label class="sr-only" for="search"> Search </label>
 
 					<input
-						class="h-10 w-full rounded-full border-none bg-white dark:bg-gray-800 pl-4 pr-10 text-sm shadow-sm sm:w-56 dark:text-white transition focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-700"
+						class="h-10 w-[25rem] rounded-full border-none bg-white dark:bg-gray-800 pl-4 pr-10 text-sm shadow-sm dark:text-white transition focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-700"
 						id="search"
 						type="search"
 						placeholder="Search movies..."
 						bind:value={searchQuery}
-						on:keyup={handleSearch}
+						on:keyup={lookUpMovies}
 					/>
 
 					<button
@@ -124,6 +163,68 @@
 						<img class="w-4 h-4 invert" src={moon} alt="" />
 					{/if}
 				</button>
+				{#if lookUpResults.length}
+					<div
+						class="grid justify-items-center bg-white dark:text-white dark:bg-gray-900/90 top-6 pt-4 rounded-b-lg pb-2 w-[25rem] px-2 h-60 overflow-y-auto overflow-x-hidden absolute"
+					>
+						{#if lookingUp}
+							<div>
+								<DotLoader />
+							</div>
+						{:else}
+							{#each lookUpResults as result}
+								<a
+									href="/detail/{result.id}"
+									role="button"
+									tabindex="0"
+									class="flex items-center gap-2 w-full text-gray-800 dark:text-gray-200 hover:bg-gray-500/40 dark:hover:bg-gray-950/40 rounded-lg p-2"
+								>
+									{#if result?.backdrop_path}
+										<img
+											class="w-16 h-16 object-cover text-sm rounded-md"
+											src={`https://image.tmdb.org/t/p/w500${result?.backdrop_path}`}
+											alt={result.title}
+										/>
+									{:else if result?.poster_path}
+										<img
+											class="w-16 h-16 object-cover text-sm"
+											src={`https://image.tmdb.org/t/p/w500${result?.poster_path}`}
+											alt={result.title}
+										/>
+									{/if}
+									<div class="w-full grid">
+										<h2 class="font-bold text-sm">{result.title || result.original_name}</h2>
+										<div class="W-full flex items-center justify-between">
+											<span class="text-xs font-light"
+												>{result?.release_date || result.first_air_date || 'N/A'}</span
+											>
+											<span
+												class="text-right uppercase text-xs bg-gray-100 text-gray-800 font-semibold py-1 rounded-full px-2"
+												>{result?.media_type}</span
+											>
+											<div>
+												<span class="flex gap-2">
+													<svg
+														viewBox="0 0 24 24"
+														fill="none"
+														xmlns="http://www.w3.org/2000/svg"
+														class="w-5"
+													>
+														<path
+															d="m12 17.328-5.403 3.286a.75.75 0 0 1-1.12-.813l1.456-6.155-4.796-4.123a.75.75 0 0 1 .428-1.316l6.303-.517 2.44-5.835a.75.75 0 0 1 1.384 0l2.44 5.835 6.303.517a.75.75 0 0 1 .427 1.316l-4.795 4.123 1.456 6.155a.75.75 0 0 1-1.12.813L12 17.328z"
+															fill="#fff700"
+														/>
+													</svg>
+													{result?.vote_average?.toFixed(1)}
+												</span>
+											</div>
+										</div>
+									</div>
+								</a>
+							{/each}
+						{/if}
+					</div>
+				{/if}
 			</section>
 		</div>
 		<section class:hidden={!viewFilter}>

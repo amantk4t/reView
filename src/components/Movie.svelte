@@ -5,7 +5,7 @@
 </script>
 
 <a
-	href="/detail/{movie.id}"
+	href="/detail/{movie.title ? 'movie' : 'tv'}/{movie.id}"
 	class:carousel
 	class="relative block overflow-hidden group w-60"
 	on:click

@@ -13,7 +13,7 @@ export const searchMultiple = (query: string) => {
 };
 
 export const getPopularSeries = (lang: string = 'en-US') => {
-	return baseAPI.get(`/tv/popular?language=${lang}`);
+	return baseAPI.get(`/trending/tv/day?language=${lang}`);
 };
 
 export const searchSeries = (query: string) => {

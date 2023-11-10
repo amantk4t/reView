@@ -5,13 +5,13 @@
 </script>
 
 <a
-	href="/detail/{movie.id}"
+	href="/detail/{movie.title ? 'movie' : 'tv'}/{movie.id}"
 	class:carousel
 	class="relative block overflow-hidden group w-full h-[25rem]"
 	on:click
 >
 	<img
-		alt={movie.title}
+		alt={movie.title || movie.original_name}
 		src={`https://image.tmdb.org/t/p/original${movie?.backdrop_path}`}
 		class="object-cover object-left-top w-full h-full transition duration-500 group-hover:scale-105"
 	/>
@@ -20,7 +20,7 @@
 		<h3
 			class="text-6xl font-bold text-gray-200 text-shadow dark:text-gray-950 dark:text-shadow-light text-center"
 		>
-			{movie.title}
+			{movie.title || movie.original_name}
 		</h3>
 	</div>
 	<section class="flex items-center gap-2">
@@ -30,14 +30,18 @@
 				fill="#fff700"
 			/>
 		</svg>
-		<p class="mt-1.5 text-sm text-gray-200 dark:text-white">
-			{movie.vote_average?.toFixed(1)} / 10
-		</p>
+		{#if movie.vote_average}
+			<p class="mt-1.5 text-sm text-gray-200 dark:text-white">
+				{movie.vote_average?.toFixed(1)} / 10
+			</p>
+		{:else}
+			<p class="mt-1.5 text-sm text-gray-700 dark:text-gray-400">No rating</p>
+		{/if}
 	</section>
 	<p
 		class="text-sm text-gray-200 font-bold px-2 absolute bottom-0 right-0 py-2 w-14 rounded-tl-full bg-gray-700/50 flex items-start justify-end"
 	>
-		{movie.release_date?.slice(0, 4)}
+		{movie.release_date?.slice(0, 4) || movie.first_air_date?.slice(0, 4)}
 	</p>
 </a>
 
