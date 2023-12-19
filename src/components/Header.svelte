@@ -174,7 +174,7 @@
 						{:else}
 							{#each lookUpResults as result}
 								<a
-									href="/detail/{result.id}"
+									href="/detail/{result.title ? 'movie' : 'tv'}/{result.id}"
 									role="button"
 									tabindex="0"
 									class="flex items-center gap-2 w-full text-gray-800 dark:text-gray-200 hover:bg-gray-500/40 dark:hover:bg-gray-950/40 rounded-lg p-2"
