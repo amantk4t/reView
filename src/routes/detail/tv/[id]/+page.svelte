@@ -1,8 +1,9 @@
 <script lang="ts">
+	import Header from '../../../../components/Header.svelte';
 	import type { PageData } from './$types';
 	import MovieCarousel from '../../../../components/MovieCarousel.svelte';
 	import DetailShimmer from '../../../../components/DetailShimmer.svelte';
-	import YouTubePlayer from '../../../../components/YouTubePlayer.svelte';
+	import VidPlayer from '../../../../components/VidPlayer.svelte';
 	import { onMount } from 'svelte';
 	import { goto, afterNavigate } from '$app/navigation';
 	import { base } from '$app/paths';
@@ -27,11 +28,12 @@
 </script>
 
 <svelte:head>
-	<title>{movie.original_name}</title>
-	<meta name="description" content="Details page" />
+	<title>Re-view - {movie.original_name}</title>
+	<meta name="description" content={movie.overview} />
 </svelte:head>
 
 <section class="dark:bg-gray-900">
+	<!-- <Header /> -->
 	<div class="flex justify-center">
 		<button
 			on:click={() => history.back()}
@@ -55,7 +57,8 @@
 	</div>
 	<div class="max-w-full">
 		<div class="mb-4">
-			<YouTubePlayer {movie} {videos} />
+			<VidPlayer title={movie.original_name} {movie} />
+			<!-- <YouTubePlayer {movie} {videos} /> -->
 		</div>
 		<div class="flex flex-col items-center justify-center">
 			{#if movie.original_name !== undefined && !loading}

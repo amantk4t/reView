@@ -2,7 +2,7 @@
 	import type { PageData } from './$types';
 	import MovieCarousel from '../../../../components/MovieCarousel.svelte';
 	import DetailShimmer from '../../../../components/DetailShimmer.svelte';
-	import YouTubePlayer from '../../../../components/YouTubePlayer.svelte';
+	import VidPlayer from '../../../../components/VidPlayer.svelte';
 	import { onMount } from 'svelte';
 	import { goto, afterNavigate } from '$app/navigation';
 	import { base } from '$app/paths';
@@ -18,6 +18,7 @@
 	$: movie = data.movie;
 	$: similar = data.similar;
 	$: videos = data.videos;
+	$: id = data.id;
 	$: loading = false;
 	$: loadingMovie = data.loading;
 	onMount(() => {
@@ -27,8 +28,8 @@
 </script>
 
 <svelte:head>
-	<title>{movie.title}</title>
-	<meta name="description" content="Details page" />
+	<title>Re-view - {movie.original_name || movie.title}</title>
+	<meta name="description" content={movie.overview} />
 </svelte:head>
 
 <section class="dark:bg-gray-900">
@@ -55,7 +56,7 @@
 	</div>
 	<div class="max-w-full">
 		<div class="mb-4">
-			<YouTubePlayer {movie} {videos} />
+			<VidPlayer title={movie.title} {movie} />
 		</div>
 		<div class="flex flex-col items-center justify-center">
 			{#if movie.title !== undefined && !loading}

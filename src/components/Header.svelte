@@ -9,7 +9,7 @@
 	import DotLoader from '../components/DotLoader.svelte';
 
 	export let dark = false;
-
+	export let showList = true;
 	const dispatch = createEventDispatcher();
 
 	let lookUpResults: any = [];
@@ -102,16 +102,18 @@
 			<button class="relative z-50">
 				<a href="/" class="text-2xl">Re-View</a>
 			</button>
-			<div
-				class="absolute top-0 left-0 w-full flex items-center overflow-auto movies-container"
-				id="carousel1"
-			>
-				{#each movies as movie}
-					<span class="min-w-full movie">
-						<Preview {movie} />
-					</span>
-				{/each}
-			</div>
+			{#if showList}
+				<div
+					class="absolute top-0 left-0 w-full flex items-center overflow-auto movies-container"
+					id="carousel1"
+				>
+					{#each movies as movie}
+						<span class="min-w-full movie">
+							<Preview {movie} />
+						</span>
+					{/each}
+				</div>
+			{/if}
 			<section class="flex gap-2 items-center relative">
 				<div class="relative z-10">
 					<label class="sr-only" for="search"> Search </label>
