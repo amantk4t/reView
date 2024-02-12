@@ -56,7 +56,7 @@
 	</div>
 	<div class="max-w-full">
 		<div class="mb-4">
-			<VidPlayer title={movie.title} {movie} />
+			<VidPlayer title={movie.title} {movie} isMovie={true} />
 		</div>
 		<div class="flex flex-col items-center justify-center">
 			{#if movie.title !== undefined && !loading}
