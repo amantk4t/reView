@@ -31,7 +31,7 @@
 					Previous
 				</button>
 			</li>
-			{#each pages.slice(0, 10) as pageNumber}
+			{#each pages.slice(0, 5) as pageNumber}
 				<li class="cursor-pointer">
 					<button
 						on:click={() => {
@@ -71,8 +71,8 @@
 
 	<div class="mx-auto max-w-screen-xl px-4 pb-8 pt-16 sm:px-6 lg:px-8">
 		<div class="mx-auto max-w-md">
-			<strong class="block text-center text-xl font-bold text-gray-900 sm:text-3xl">
-				Want us to email you with the latest blockbuster news?
+			<strong class="block text-center text-xl font-bold text-gray-900 dark:text-white sm:text-3xl">
+				Want us to email you with our favorite movies of the week every week?
 			</strong>
 
 			<form class="mt-6">
@@ -80,7 +80,7 @@
 					<label class="sr-only" for="email"> Email </label>
 
 					<input
-						class="w-full rounded-full border-gray-200 bg-gray-100 p-4 pe-32 text-sm font-medium"
+						class="w-full rounded-full border-gray-200 dark:border-gray-900 dark:bg-gray-800 bg-gray-100 p-4 pe-32 text-sm font-medium"
 						id="email"
 						type="email"
 						placeholder="john@doe.com"
@@ -190,27 +190,41 @@
 
 			<div class="grid grid-cols-1 gap-8 text-center lg:grid-cols-3 lg:text-left">
 				<div>
-					<strong class="font-medium text-gray-900"> Services </strong>
+					<strong class="font-medium text-gray-900 dark:text-gray-200"> Services </strong>
 
 					<ul class="mt-6 space-y-1">
 						<li>
-							<a class="text-gray-700 transition hover:text-gray-700/75" href="/"> Marketing </a>
+							<a
+								class="text-gray-700 transition hover:text-gray-700/75 dark:text-gray-500 dark:hover:text-gray-300/75"
+								href="/"
+							>
+								Marketing
+							</a>
 						</li>
 
 						<li>
-							<a class="text-gray-700 transition hover:text-gray-700/75" href="/">
+							<a
+								class="text-gray-700 transition hover:text-gray-700/75 dark:text-gray-500 dark:hover:text-gray-300/75"
+								href="/"
+							>
 								Graphic Design
 							</a>
 						</li>
 
 						<li>
-							<a class="text-gray-700 transition hover:text-gray-700/75" href="/">
+							<a
+								class="text-gray-700 transition hover:text-gray-700/75 dark:text-gray-500 dark:hover:text-gray-300/75"
+								href="/"
+							>
 								App Development
 							</a>
 						</li>
 
 						<li>
-							<a class="text-gray-700 transition hover:text-gray-700/75" href="/">
+							<a
+								class="text-gray-700 transition hover:text-gray-700/75 dark:text-gray-500 dark:hover:text-gray-300/75"
+								href="/"
+							>
 								Web Development
 							</a>
 						</li>
@@ -218,41 +232,76 @@
 				</div>
 
 				<div>
-					<strong class="font-medium text-gray-900"> About </strong>
+					<strong class="font-medium text-gray-900 dark:text-gray-200"> About </strong>
 
 					<ul class="mt-6 space-y-1">
 						<li>
-							<a class="text-gray-700 transition hover:text-gray-700/75" href="/"> About </a>
+							<a
+								class="text-gray-700 transition hover:text-gray-700/75 dark:text-gray-500 dark:hover:text-gray-300/75"
+								href="/"
+							>
+								About
+							</a>
 						</li>
 
 						<li>
-							<a class="text-gray-700 transition hover:text-gray-700/75" href="/"> Careers </a>
+							<a
+								class="text-gray-700 transition hover:text-gray-700/75 dark:text-gray-500 dark:hover:text-gray-300/75"
+								href="/"
+							>
+								Careers
+							</a>
 						</li>
 
 						<li>
-							<a class="text-gray-700 transition hover:text-gray-700/75" href="/"> History </a>
+							<a
+								class="text-gray-700 transition hover:text-gray-700/75 dark:text-gray-500 dark:hover:text-gray-300/75"
+								href="/"
+							>
+								History
+							</a>
 						</li>
 
 						<li>
-							<a class="text-gray-700 transition hover:text-gray-700/75" href="/"> Our Team </a>
+							<a
+								class="text-gray-700 transition hover:text-gray-700/75 dark:text-gray-500 dark:hover:text-gray-300/75"
+								href="/"
+							>
+								Our Team
+							</a>
 						</li>
 					</ul>
 				</div>
 
 				<div>
-					<strong class="font-medium text-gray-900"> Support </strong>
+					<strong class="font-medium text-gray-900 dark:text-gray-200"> Support </strong>
 
 					<ul class="mt-6 space-y-1">
 						<li>
-							<a class="text-gray-700 transition hover:text-gray-700/75" href="/"> FAQs </a>
+							<a
+								class="text-gray-700 transition hover:text-gray-700/75 dark:text-gray-500 dark:hover:text-gray-300/75"
+								href="/"
+							>
+								FAQs
+							</a>
 						</li>
 
 						<li>
-							<a class="text-gray-700 transition hover:text-gray-700/75" href="/"> Contact </a>
+							<a
+								class="text-gray-700 transition hover:text-gray-700/75 dark:text-gray-500 dark:hover:text-gray-300/75"
+								href="/"
+							>
+								Contact
+							</a>
 						</li>
 
 						<li>
-							<a class="text-gray-700 transition hover:text-gray-700/75" href="/"> Live Chat </a>
+							<a
+								class="text-gray-700 transition hover:text-gray-700/75 dark:text-gray-500 dark:hover:text-gray-300/75"
+								href="/"
+							>
+								Live Chat
+							</a>
 						</li>
 					</ul>
 				</div>
@@ -260,18 +309,7 @@
 		</div>
 
 		<div class="mt-16 border-t border-gray-100 pt-8">
-			<p class="text-center text-xs/relaxed text-gray-500">
-				© Company 2022. All rights reserved.
-
-				<br />
-
-				Created with
-				<a href="" class="text-gray-700 underline transition hover:text-gray-700/75">Laravel</a>
-				and
-				<a href="" class="text-gray-700 underline transition hover:text-gray-700/75"
-					>Laravel Livewire</a
-				>.
-			</p>
+			<p class="text-center text-xs/relaxed text-gray-500">© 2024. All rights reserved.</p>
 		</div>
 	</div>
 </footer>

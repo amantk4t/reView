@@ -42,6 +42,12 @@
 		}
 	};
 
+	const toggleDark = () => {
+		const htmlElementDom = document.querySelector('html');
+		htmlElementDom?.classList.value.includes('dark') ? (dark = false) : (dark = true);
+		htmlElementDom?.classList.toggle('dark');
+	};
+
 	const scroll = () => {
 		const scrollBar = document.querySelector('#carousel1');
 		scrollPosition = scrollBar?.scrollLeft + 1100;
@@ -97,10 +103,14 @@
 </script>
 
 <header aria-label="Page Header" class="pb-4 top-0 z-50">
-	<div id="header" class="w-full h-[25rem] p-4 sm:px-6 lg:px-8 shadow-md">
-		<div class="flex items-center justify-between gap-4">
-			<button class="relative z-50">
-				<a href="/" class="text-2xl">Re-View</a>
+	<div
+		id="header"
+		class="w-full h-[25rem] px-1.5 py-4 sm:px-6 lg:px-8 shadow-md"
+		class:h-fit={!showList}
+	>
+		<div class="flex items-center justify-between gap-2 sm:gap-4">
+			<button class="relative z-50" class:ml-12={!showList}>
+				<a href="/" class="text-2xl" class:font-semibold={!showList}>Re-View</a>
 			</button>
 			{#if showList}
 				<div
@@ -115,11 +125,11 @@
 				</div>
 			{/if}
 			<section class="flex gap-2 items-center relative">
-				<div class="relative z-10">
+				<div class="relative z-50">
 					<label class="sr-only" for="search"> Search </label>
 
 					<input
-						class="h-10 w-[25rem] rounded-full border-none bg-white dark:bg-gray-800 pl-4 pr-10 text-sm shadow-sm dark:text-white transition focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-700"
+						class="h-10 sm:w-[25rem] rounded-full border-none bg-white dark:bg-gray-800 pl-4 pr-10 text-sm shadow-sm dark:text-white transition focus:outline-none focus:ring-2 focus:ring-orange-300 dark:focus:ring-gray-700"
 						id="search"
 						type="search"
 						placeholder="Search movies..."
@@ -156,18 +166,18 @@
 					</button>
 				</div>
 				<button
-					on:click
+					on:click={toggleDark}
 					class="flex items-center justify-center focus:outline-none hover:border-transparent text-gray-700 dark:text-white relative ml-3 rounded-full p-3 transition"
 				>
 					{#if dark}
-						<img class="w-4 h-4 invert" src={sun} alt="" />
+						<img class="w-4 h-4 dark:invert" class:invert={showList} src={sun} alt="" />
 					{:else}
-						<img class="w-4 h-4 invert" src={moon} alt="" />
+						<img class="w-4 h- dark:invert" class:invert={showList} src={moon} alt="" />
 					{/if}
 				</button>
 				{#if lookUpResults.length}
 					<div
-						class="grid justify-items-center bg-white dark:text-white dark:bg-gray-900/90 top-6 pt-4 rounded-b-lg pb-2 w-[25rem] px-2 h-60 overflow-y-auto overflow-x-hidden absolute"
+						class="grid justify-items-center bg-white dark:text-white dark:bg-gray-900/90 top-6 pt-4 rounded-b-lg pb-2 w-[25rem] px-2 h-60 overflow-y-auto overflow-x-hidden absolute z-40"
 					>
 						{#if lookingUp}
 							<div>
@@ -233,7 +243,7 @@
 			<label class="inline-flex relative items-center my-auto cursor-pointer">
 				<input type="checkbox" class="sr-only peer" checked={filter.adult} />
 				<div
-					class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+					class="w-9 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
 				/>
 				<span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Adult</span>
 			</label>
@@ -242,13 +252,6 @@
 </header>
 
 <style>
-	#header {
-		background-image: radial-gradient(
-			50% 50% at 50% 50%,
-			rgba(0, 0, 0, 0.342) 0%,
-			rgba(0, 0, 0, 0.555) 100%
-		);
-	}
 	button a {
 		font-family: 'Rubik Distressed', cursive !important;
 	}

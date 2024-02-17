@@ -17,9 +17,7 @@
 	/>
 
 	<div class="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 p-4 mt-2 h-20">
-		<h3
-			class="text-6xl font-bold text-gray-200 text-shadow dark:text-gray-950 dark:text-shadow-light text-center"
-		>
+		<h3 class="text-6xl font-bold text-gray-200 text-shadow text-center">
 			{movie.title || movie.original_name}
 		</h3>
 	</div>

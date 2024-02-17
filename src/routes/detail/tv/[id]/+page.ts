@@ -25,6 +25,7 @@ export const load = (async ({ params, fetch }) => {
 		const res3 = await fetch(
 			`https://api.themoviedb.org/3/tv/${params.id}/videos?api_key=336d8f817c1d2a54717df29483ea4d8b&language=en-US`
 		);
+
 		const videos = await res3.json();
 
 		console.log(videos);

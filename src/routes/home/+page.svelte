@@ -14,12 +14,6 @@
 	$: resData = Response;
 	$: url = $page.url.search;
 
-	const toggleDark = () => {
-		const htmlElementDom = document.querySelector('html');
-		htmlElementDom?.classList.value.includes('dark') ? (dark = false) : (dark = true);
-		htmlElementDom?.classList.toggle('dark');
-	};
-
 	const fetchMovies = async () => {
 		loading = true;
 		const response = await getPopularMovies();
@@ -100,7 +94,7 @@
 </svelte:head>
 
 <main class="dark:bg-gray-900 min-h-screen">
-	<Header on:search={searchMovie} on:click={toggleDark} {dark} />
+	<Header on:search={searchMovie} {dark} />
 	<!-- attach prop movie -->
 	<h2 class="text-gray-800 font-semibold mx-2 dark:text-white">Popular</h2>
 	{#if loading}
