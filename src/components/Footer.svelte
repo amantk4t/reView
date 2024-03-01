@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 
-	export let currentPage = 1;
-	export let totalPages = 1;
+	export let currentPage: any = 1;
+	export let totalPages: any = 1;
 
 	$: pages = Array(totalPages)
 		.fill(0)

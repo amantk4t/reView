@@ -2,6 +2,7 @@
 	import Header from '../../components/Header.svelte';
 	import Footer from '../../components/Footer.svelte';
 	import Movie from '../../components/Movie.svelte';
+	import Preview from '../../components/Preview.svelte';
 	import Loader from '../../components/Loader.svelte';
 	import { onMount } from 'svelte';
 	import axios from 'axios';
@@ -10,6 +11,7 @@
 
 	$: dark = true;
 	$: movies = [{}];
+	$: trending = [] as any[];
 	$: loading = false;
 	$: resData = Response;
 	$: url = $page.url.search;
@@ -21,6 +23,7 @@
 		console.log('Movies', response);
 		resData = { ...response.data };
 		movies = [...response.data.results];
+		trending = [...trending, ...movies];
 	};
 
 	const fetchSeries = async () => {
@@ -30,6 +33,7 @@
 		console.log('Series', response);
 		resData = { ...response.data };
 		movies = [...response.data.results];
+		trending = [...trending, ...movies];
 	};
 
 	const searchMovie = async (e: any) => {
@@ -96,13 +100,18 @@
 <main class="dark:bg-gray-900 min-h-screen">
 	<Header on:search={searchMovie} {dark} />
 	<!-- attach prop movie -->
-	<h2 class="text-gray-800 font-semibold mx-2 dark:text-white">Popular</h2>
+
+	<span class="min-w-full movie">
+		<Preview movies={trending} />
+	</span>
+
+	<h2 class="text-gray-800 font-semibold mx-2 dark:text-white text-xl pl-4 pb-4 pt-8">Popular</h2>
 	{#if loading}
 		<Loader />
 	{:else if movies.length === 0}
 		<h1 class="text-4xl text-center text-gray-500">No movies found</h1>
 	{:else}
-		<section class="flex flex-wrap gap-4 items-center justify-around">
+		<section class="flex flex-wrap gap-4 items-center justify-around px-4">
 			{#each movies as movie}
 				<Movie {movie} />
 			{/each}

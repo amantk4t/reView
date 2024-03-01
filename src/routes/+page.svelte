@@ -1,20 +1,14 @@
 <script lang="ts">
-	import Header from '../components/Header.svelte';
-	import Footer from '../components/Footer.svelte';
-	import Preview from '../components/Preview.svelte';
-	import Loader from '../components/Loader.svelte';
-	import sun from '$lib/icons/sun.svg';
-	import moon from '$lib/icons/moon.svg';
 	import { onMount } from 'svelte';
 	import { getPopularMovies, searchMultiple } from '../services/Movies.service';
 	import DotLoader from '../components/DotLoader.svelte';
 	import { goto } from '$app/navigation';
-	import backgroundImage from '$lib/images/background.jpg';
 
 	$: dark = true;
 	$: movies = [{}];
 	$: loading = false;
 	$: lookingUp = false;
+	$: latest = {} as any;
 	$: resData = Response;
 
 	let query = '';
@@ -33,6 +27,8 @@
 		console.log(response);
 		resData = { ...response.data };
 		movies = [...response.data.results];
+		latest = movies.length ? movies[0] : undefined;
+		console.log('Latest', movies[0]);
 	};
 
 	const lookUpMovies = async (ev: any) => {
@@ -72,17 +68,21 @@
 	/>
 </svelte:head>
 
-<main class="bg-gray-700 min-h-screen relative">
-	<!-- <img
+<main class="bg-gray-700 min-h-screen relative faded faded-left faded-right faded-top faded-bottom">
+	<img
 		alt=""
-		src={backgroundImage}
-		class="absolute top-0 left-0 w-full h-full object-cover object-center backdrop-blur-sm"
-	/> -->
-	<nav class="w-full flex items-center p-8 pt-6 pb-12 justify-between relative z-10">
+		src={`https://image.tmdb.org/t/p/original${latest?.backdrop_path}`}
+		class="absolute top-0 left-0 w-full h-full object-cover object-center opacity-40"
+	/>
+	<nav
+		class="w-full max-w-full overflow-clip flex items-center sm:p-8 p-4 pt-6 pb-32 sm:pb-12 justify-between relative z-10"
+	>
 		<button class="text-2xl">
 			<a href="/">Re-view</a>
 		</button>
-		<nav class="flex items-center gap-8 text-orange-500">
+		<nav
+			class="absolute top-16 flex items-center justify-center gap-8 sm:static text-orange-500 w-full"
+		>
 			<a
 				class="text-gray-200 font-semibold dark:hover:text-orange-500 hover:text-orange-500 hover:underline underline-offset-4"
 				href="/home">Browse</a
@@ -105,8 +105,8 @@
 		</div>
 	</nav>
 	<div class="grid justify-items-center gap-4 relative z-10">
-		<div class="grid justify-items-center w-[30rem] gap-5 max-w-full">
-			<h2 class="text-center text-5xl font-bold text-white font-serif">
+		<div class="grid justify-items-center w-full sm:w-[30rem] gap-5 max-w-full">
+			<h2 class="text-center text-4xl sm:text-5xl font-bold text-white font-serif">
 				Welcome to Re-view Movies
 			</h2>
 			<p class="text-center text-gray-200 leading-6">
@@ -115,7 +115,7 @@
 			</p>
 		</div>
 		<div class="box-border grid justify-items-center">
-			<div class="px-8 py-3 relative w-[35rem] z-20">
+			<div class="px-8 py-3 relative w-full sm:w-[35rem] z-20">
 				<svg
 					class="w-14 h-14 px-4 py-2 absolute top-1/2 -translate-y-1/2 left-9 bg-gradient-to-br text-gray-600 dark:text-gray-400 font-semibold"
 					viewBox="0 0 24 24"
@@ -212,7 +212,34 @@
 	button a {
 		font-family: 'Rubik Distressed', cursive !important;
 	}
-
+	.faded {
+		position: relative;
+		display: inline-block;
+		color: white;
+		width: 100%;
+	}
+	.faded:after {
+		content: '';
+		position: absolute;
+		display: block;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border-collapse: separate;
+	}
+	.faded.faded-left:after {
+		box-shadow: inset 5rem 0 5rem -1rem hsl(208, 100%, 22%);
+	}
+	.faded.faded-right:after {
+		box-shadow: inset -5rem 0 5rem -1rem hsl(208, 100%, 22%);
+	}
+	.faded.faded-top:after {
+		box-shadow: inset 0 5rem 5rem -1rem hsl(208, 100%, 22%);
+	}
+	.faded.faded-bottom:after {
+		box-shadow: inset 0 -5rem 5rem -1rem hsl(208, 100%, 22%);
+	}
 	main {
 		/* content: '';
 		position: absolute;

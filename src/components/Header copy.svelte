@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount, onDestroy } from 'svelte';
 	import sun from '$lib/icons/sun.svg';
 	import moon from '$lib/icons/moon.svg';
 	import filterIcon from '$lib/icons/filter.svg';
+	import Preview from './Preview.svelte';
 	import { getPopularMovies, getPopularSeries, searchMultiple } from '../services/Movies.service';
 	import { page } from '$app/stores';
 	import DotLoader from '../components/DotLoader.svelte';
 
 	export let dark = false;
 	export let showList = true;
-
 	const dispatch = createEventDispatcher();
 
 	let lookUpResults: any = [];
@@ -67,15 +67,61 @@
 			dispatch('search', searchQuery);
 		}
 	};
+
+	onMount(async () => {
+		if (url !== '' && url.indexOf('type=') !== -1) {
+			const queryParam = 'type=';
+			const startIndex = url.indexOf(queryParam);
+			if (startIndex !== -1) {
+				console.log('Url', url !== '' && url.indexOf('type=') !== -1);
+				const encodedText = url.substring(startIndex + queryParam.length);
+				const decodedText = decodeURIComponent(encodedText);
+				console.log('Decoded', decodedText);
+				if (decodedText === `'movies'`) {
+					const res = await getPopularMovies();
+					movies = res.data.results;
+				} else {
+					const res = await getPopularSeries();
+					movies = res.data.results;
+				}
+			}
+		} else {
+			const res = await getPopularMovies();
+			const res2 = await getPopularSeries();
+			movies = [...res.data.results, ...res2.data.results];
+		}
+
+		scrollInterval = setInterval(() => {
+			scroll();
+		}, 10000);
+		console.log('Movies', movies);
+	});
+
+	onDestroy(() => {
+		clearInterval(scrollInterval);
+	});
 </script>
 
 <header aria-label="Page Header" class="pb-4 top-0 z-50">
-	<div id="header" class="w-full px-1.5 py-4 sm:px-6 lg:px-8 shadow-md">
+	<div
+		id="header"
+		class="w-full h-[25rem] px-1.5 py-4 sm:px-6 lg:px-8 shadow-md"
+		class:h-fit={!showList}
+	>
 		<div class="flex items-center justify-between gap-2 sm:gap-4">
 			<button class="relative z-50" class:ml-12={!showList}>
 				<a href="/" class="text-2xl" class:font-semibold={!showList}>Re-View</a>
 			</button>
-
+			{#if showList}
+				<div
+					class="absolute top-0 left-0 w-full flex items-center overflow-auto movies-container"
+					id="carousel1"
+				>
+					{#each movies as movie}
+						<span class="min-w-full movie" />
+					{/each}
+				</div>
+			{/if}
 			<section class="flex gap-2 items-center relative">
 				<div class="relative z-50">
 					<label class="sr-only" for="search"> Search </label>
@@ -122,9 +168,9 @@
 					class="flex items-center justify-center focus:outline-none hover:border-transparent text-gray-700 dark:text-white relative ml-3 rounded-full p-3 transition"
 				>
 					{#if dark}
-						<img class="w-4 h-4 dark:invert" src={sun} alt="" />
+						<img class="w-4 h-4 dark:invert" class:invert={showList} src={sun} alt="" />
 					{:else}
-						<img class="w-4 h- dark:invert" src={moon} alt="" />
+						<img class="w-4 h- dark:invert" class:invert={showList} src={moon} alt="" />
 					{/if}
 				</button>
 				{#if lookUpResults.length}

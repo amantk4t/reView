@@ -20,6 +20,7 @@
 	$: similar = data.similar;
 	$: videos = data.videos;
 	$: id = data.id;
+	$: type = data.type;
 	$: loading = false;
 	$: loadingMovie = data.loading;
 	onMount(() => {
@@ -151,7 +152,22 @@
 			{/if}
 		</div>
 	</div>
-	<h3 class="ml-20 text-xl text-gray-700 font-bold mt-20 mb-5">Similar movies</h3>
+
+	<div class="ml-20 text-xl text-gray-700 font-bold mt-20 mb-5">
+		<nav class="flex gap-3 font-semibold border" aria-label="Tabs">
+			<button
+				class="shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+			>
+				Similar
+			</button>
+
+			<button
+				class="shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+			>
+				Recommended
+			</button>
+		</nav>
+	</div>
 	<MoviesList {similar} />
 </section>
 

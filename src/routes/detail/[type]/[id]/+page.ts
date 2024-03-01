@@ -40,6 +40,7 @@ export const load = (async ({ params, fetch }) => {
 		const similar = await res2.json();
 		return {
 			id: params.id,
+			type: params.type,
 			movie,
 			similar: similar.results,
 			videos: videos.results,
