@@ -5,23 +5,38 @@
 	export let title = '';
 	export let isMovie = false;
 
-	$: loading = true;
+	$: opened = false;
+	$: loading = false;
 	$: tmdb_id = movie.id;
 
 	$: src = isMovie
 		? `https://vidsrc.to/embed/movie/${tmdb_id}`
 		: `https://vidsrc.to/embed/tv/${tmdb_id}`;
+
+	const loadVideo = async () => {
+		try {
+			loading = true;
+			const resMovie = await fetch(src);
+			opened = true;
+			const playBtn = document.getElementById('btn-play');
+			playBtn?.click();
+		} catch (error) {
+			console.error(error);
+		} finally {
+			loading = false;
+		}
+	};
 </script>
 
 <div
 	class="relative mt-5 md:mb-0 w-[95vw] sm:w-[75vw] mx-auto sm:h-[65vh] min-h-[400px] max-w-full"
 >
-	{#if loading}
+	{#if opened}
 		<div class="absolute w-full h-full top-0 left-0 z-30 rounded-lg bg-gray-400/50">
 			<div class="relative w-full h-full">
 				<iframe
 					{title}
-					{src}
+					src="https://vidplay.online/e/XEYL0OZRWJVN?sub.info=https%3A%2F%2Fvidsrc.to%2Fajax%2Fembed%2Fepisode%2FofJoOs5k%2Fsubtitles&amp;t=4xjQAPYkAVENxQ%3D%3D&amp;ads=0&amp;src=vidsrc&amp;autostart=true"
 					frameborder="0"
 					allowfullscreen
 					class="absolute top-0 left-0 w-full h-full rounded-lg"
@@ -32,9 +47,10 @@
 		<img
 			alt={title}
 			src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-			class="absolute z-40 object-cover w-full h-full shadow-lg rounded-lg"
+			class="absolute z-40 object-cover w-full max-h-full overflow-hidden shadow-lg rounded-lg"
 		/>
 		<button
+			on:click={loadVideo}
 			aria-label="Play Video"
 			class:loading
 			class="absolute inset-0 top-0 flex items-center justify-center w-screen max-w-full h-full transition-colors duration-300 bg-gray-800 bg-opacity-50 group hover:bg-opacity-25 rounded-lg z-40"

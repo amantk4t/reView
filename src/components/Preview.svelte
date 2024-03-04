@@ -25,11 +25,11 @@
 </script>
 
 {#if onDisplay !== -1}
-	<div class="flex items-center justify-between pl-4 pr-8 py-2">
+	<main class="flex items-center justify-between pl-4 pr-8 py-2">
 		<a
 			href="/detail/{movies[onDisplay].title ? 'movies' : 'tv'}/{movies[onDisplay].id}"
 			class:carousel
-			class="relative hidden sm:block overflow-hidden group w-2/3 h-[35rem] rounded-3xl"
+			class="relative hidden sm:block overflow-hidden group w-4/6 h-[35rem] rounded-3xl"
 			on:click
 		>
 			<img
@@ -38,7 +38,7 @@
 				class="object-cover object-left-top w-full h-full transition duration-500 group-hover:scale-105"
 			/>
 
-			<div class="absolute top-[65%] p-4 mt-2 h-1/3 m-1 w-full px-8 bg-black/30">
+			<div class="absolute top-[65%] left-0 p-4 mt-2 h-1/3 w-full px-8 bg-black/30">
 				<h3 class="text-5xl font-bold text-gray-200 text-shadow mb-2">
 					{movies[onDisplay].title || movies[onDisplay].original_name}
 				</h3>
@@ -70,14 +70,26 @@
 				</p>
 			</div>
 		</a>
-		<section class="w-96 h-96 relative">
+		<section class="w-[31%] h-96 relative">
 			<div class="bg-orange-300 w-full h-full rounded-3xl" />
-			<div class="bg-white absolute top-0 left-0 rotate-6 w-full h-full rounded-3xl overflow-clip">
+			<div
+				class="bg-white absolute top-0 left-0 rotate-6 w-full h-full rounded-3xl overflow-clip group"
+			>
 				<img
 					src={`https://image.tmdb.org/t/p/original${movies[onDisplay + 1].backdrop_path}`}
 					class="w-full h-full object-cover"
 					alt={movies[onDisplay + 1].title}
 				/>
+				<a
+					href="/detail/{movies[onDisplay + 1].title ? 'movies' : 'tv'}/{movies[onDisplay + 1].id}"
+					class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-10 group-hover:w-16 transition-all duration-1000"
+				>
+					<svg class="w-inherit text-white" fill="currentColor" viewBox="0 0 24 24">
+						<path
+							d="M16.53,11.152l-8-5C8.221,5.958,7.833,5.949,7.515,6.125C7.197,6.302,7,6.636,7,7v10 c0,0.364,0.197,0.698,0.515,0.875C7.667,17.958,7.833,18,8,18c0.184,0,0.368-0.051,0.53-0.152l8-5C16.822,12.665,17,12.345,17,12 S16.822,11.335,16.53,11.152z"
+						/>
+					</svg>
+				</a>
 				<div class="bg-black/30 w-full absolute bottom-0 p-8 grid gap-2.5">
 					<h3 class="text-xl font-bold text-gray-200 text-shadow">
 						{movies[onDisplay + 1].title || movies[onDisplay + 1].original_name}
@@ -109,10 +121,13 @@
 				</div>
 			</div>
 		</section>
-	</div>
+	</main>
 {/if}
 
 <style>
+	img {
+		@apply transition-all duration-1000;
+	}
 	.text-shadow {
 		text-shadow: 2px 2px 0 rgba(0, 0, 0, 1);
 	}

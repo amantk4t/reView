@@ -6,7 +6,12 @@
 	import Loader from '../../components/Loader.svelte';
 	import { onMount } from 'svelte';
 	import axios from 'axios';
-	import { getPopularMovies, getPopularSeries, searchMovies } from '../../services/Movies.service';
+	import {
+		getTrending,
+		getPopularMovies,
+		getPopularSeries,
+		searchMovies
+	} from '../../services/Movies.service';
 	import { page } from '$app/stores';
 
 	$: dark = true;
@@ -16,24 +21,35 @@
 	$: resData = Response;
 	$: url = $page.url.search;
 
-	const fetchMovies = async () => {
+	type MovieType = 'movie' | 'tv';
+
+	const fetchTrending = async (type?: MovieType) => {
+		loading = true;
+		const response = await getTrending(type ?? 'all');
+		loading = false;
+		console.log('Trending', response);
+		resData = { ...response.data };
+		trending = [...response.data.results];
+	};
+
+	const fetchPopularMovies = async () => {
+		await fetchTrending('movie');
 		loading = true;
 		const response = await getPopularMovies();
 		loading = false;
 		console.log('Movies', response);
 		resData = { ...response.data };
 		movies = [...response.data.results];
-		trending = [...trending, ...movies];
 	};
 
-	const fetchSeries = async () => {
+	const fetchPopularSeries = async () => {
+		await fetchTrending('tv');
 		loading = true;
 		const response = await getPopularSeries();
 		loading = false;
 		console.log('Series', response);
 		resData = { ...response.data };
 		movies = [...response.data.results];
-		trending = [...trending, ...movies];
 	};
 
 	const searchMovie = async (e: any) => {
@@ -59,9 +75,12 @@
 		if (url !== '' && url.indexOf('query=') !== -1) {
 			const queryParam = 'query=';
 			const startIndex = url.indexOf(queryParam);
+
 			if (startIndex !== -1) {
 				const encodedText = url.substring(startIndex + queryParam.length);
 				const decodedText = decodeURIComponent(encodedText);
+				const type: MovieType = decodedText === 'movie' ? 'movie' : 'tv';
+				await fetchTrending(type);
 				console.log('Decoded', decodedText);
 				const q = {
 					detail: decodedText
@@ -70,15 +89,19 @@
 			}
 		} else if (url !== '' && url.indexOf('type=') !== -1) {
 			const queryParam = 'type=';
+
+			console.log('🚀 ~ onMount ~ queryParam:', queryParam);
+
 			const startIndex = url.indexOf(queryParam);
 			if (startIndex !== -1) {
-				console.log('Url', url !== '' && url.indexOf('type=') !== -1);
 				const encodedText = url.substring(startIndex + queryParam.length);
+
 				const decodedText = decodeURIComponent(encodedText);
-				if (decodedText === `'movies'`) await fetchMovies();
-				else await fetchSeries();
+
+				if (decodedText === 'movies') await fetchPopularMovies();
+				else await fetchPopularSeries();
 			}
-		} else fetchMovies();
+		} else fetchPopularMovies();
 	});
 </script>
 

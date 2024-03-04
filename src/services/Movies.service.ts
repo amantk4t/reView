@@ -19,3 +19,11 @@ export const getPopularSeries = (lang: string = 'en-US') => {
 export const searchSeries = (query: string) => {
 	return baseAPI.get(`/search/tv?query=${query}`);
 };
+
+export const discoverMovies = (lang: string = 'en-US') => {
+	return baseAPI.get(`/discover/movie?language=${lang}&sort_by=popularity.desc`);
+};
+
+export const getTrending = (lang: string = 'en-US', type: string = 'all') => {
+	return baseAPI.get(`/trending/${type}/day?language=${lang}`);
+};

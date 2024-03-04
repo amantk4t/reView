@@ -35,7 +35,7 @@
 		lookingUp = true;
 		const res = await searchMultiple(query);
 		lookUpResults = res.data.results?.filter(
-			(res) => res.media_type === 'tv' || res.media_type === 'movie'
+			(res: any) => res.media_type === 'tv' || res.media_type === 'movie'
 		);
 		lookingUp = false;
 		console.log('lookup res', lookUpResults);
@@ -77,7 +77,7 @@
 	<nav
 		class="w-full max-w-full overflow-clip flex items-center sm:p-8 p-4 pt-6 pb-32 sm:pb-12 justify-between relative z-10"
 	>
-		<button class="text-2xl">
+		<button class="text-2xl w-1/4">
 			<a href="/">Re-view</a>
 		</button>
 		<nav
@@ -89,16 +89,16 @@
 			>
 			<a
 				class="text-gray-200 font-semibold dark:hover:text-orange-500 hover:text-orange-500 hover:underline underline-offset-4"
-				href="/home?type='movies'">Movies</a
+				href="/home?type=movies">Movies</a
 			>
 			<a
 				class="text-gray-200 font-semibold dark:hover:text-orange-500 hover:text-orange-500 hover:underline underline-offset-4"
-				href="/home?type='series'">Series</a
+				href="/home?type=series">Series</a
 			>
 		</nav>
-		<div class="flex items-center gap-3">
+		<div class="flex items-center gap-3 w-1/4">
 			<button
-				class="bg-gradient-to-br from-orange-500 to-red-500 bg-clip-text text-transparent font-bold"
+				class="bg-gradient-to-br from-orange-500 to-red-500 bg-clip-text text-transparent font-bold text-xl"
 			>
 				Login
 			</button>
@@ -114,7 +114,7 @@
 				Find trailers, read reviews, and discover what other people are saying about your favorite films.
 			</p>
 		</div>
-		<div class="box-border grid justify-items-center">
+		<div class="box-border grid justify-items-center w-full">
 			<div class="px-8 py-3 relative w-full sm:w-[35rem] z-20">
 				<svg
 					class="w-14 h-14 px-4 py-2 absolute top-1/2 -translate-y-1/2 left-9 bg-gradient-to-br text-gray-600 dark:text-gray-400 font-semibold"
@@ -135,12 +135,12 @@
 					bind:value={query}
 					placeholder="What would you like to see?"
 					type="text"
-					class="py-3 pl-12 pr- w-full dark:bg-gray-900 rounded-full focus-visible:outline-none focus-visible:shadow-lg"
+					class="py-3 pl-12 pr- w-full text-gray-900 dark:bg-gray-900 rounded-full focus-visible:outline-none focus-visible:shadow-lg"
 				/>
 			</div>
 			{#if lookUpResults.length}
 				<div
-					class="grid justify-items-center bg-white dark:text-white dark:bg-gray-900/90 relative -top-5 pt-4 rounded-b-lg pb-2 w-[30rem] px-2 h-60 overflow-y-auto overflow-x-hidden"
+					class="grid justify-items-center bg-white dark:text-white dark:bg-gray-900/90 relative -top-5 pt-4 rounded-b-lg pb-2 w-full max-w-xs sm:w-[30rem] px-2 h-60 overflow-y-auto overflow-x-hidden"
 				>
 					{#if lookingUp}
 						<div>

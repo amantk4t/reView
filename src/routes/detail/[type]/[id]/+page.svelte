@@ -6,6 +6,7 @@
 	import Header from '../../../../components/Header.svelte';
 	import { onMount } from 'svelte';
 	import { goto, afterNavigate } from '$app/navigation';
+	import { navigating } from '$app/stores';
 	import { base } from '$app/paths';
 
 	export let data: PageData;
@@ -37,8 +38,9 @@
 <section class="dark:bg-gray-900">
 	<Header showList={false} />
 	<div class="flex justify-center">
+		{$navigating?.to}
 		<button
-			on:click={() => history.back()}
+			on:click={() => goto($navigating.from)}
 			class="flex items-center justify-center w-10 h-10 transition duration-300 transform dark:text-gray-200 rounded-full shadow-2xl absolute top-5 left-5 z-50 hover:text-gray-100"
 		>
 			<svg
