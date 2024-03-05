@@ -70,7 +70,7 @@
 </script>
 
 <header aria-label="Page Header" class="pb-4 top-0 z-50">
-	<div id="header" class="w-full px-1.5 py-4 sm:px-6 lg:px-8 shadow-md">
+	<div id="header" class="w-full px-1.5 py-4 sm:px-6 lg:px-8">
 		<div class="flex items-center justify-between gap-2 sm:gap-4">
 			<button class="relative z-50" class:ml-12={!showList}>
 				<a href="/" class="text-2xl" class:font-semibold={!showList}>Re-View</a>
@@ -81,7 +81,7 @@
 					<label class="sr-only" for="search"> Search </label>
 
 					<input
-						class="h-10 sm:w-[25rem] rounded-full border-none bg-white dark:bg-gray-800 pl-4 pr-10 text-sm shadow-sm dark:text-white transition focus:outline-none focus:ring-2 focus:ring-orange-300 dark:focus:ring-gray-700"
+						class="h-10 sm:w-[25rem] rounded-full border-none bg-white dark:bg-gray-950 pl-4 pr-10 text-sm shadow-sm dark:text-white transition focus:outline-none focus:ring-2 focus:ring-orange-300 dark:focus:ring-gray-700"
 						id="search"
 						type="search"
 						placeholder="Search movies..."
@@ -91,7 +91,7 @@
 
 					<button
 						on:click={() => handleSearch}
-						class="absolute top-1/2 right-10 -translate-y-1/2 rounded-full bg-gray-50 dark:bg-gray-800 p-2 text-gray-600 dark:text-gray-300 transition hover:text-gray-700"
+						class="absolute top-1/2 right-10 -translate-y-1/2 rounded-full bg-gray-50 dark:bg-gray-950 p-2 text-gray-600 dark:text-gray-300 transition hover:text-gray-700"
 					>
 						<span class="sr-only">Search</span>
 						<svg
@@ -111,25 +111,25 @@
 					</button>
 					<button
 						on:click={toggleFilter}
-						class="absolute top-0 right-1 flex items-center justify-center focus:outline-none hover:border-transparent text-gray-700 dark:text-white ml-3 bg-white dark:bg-gray-800 rounded-full p-3 transition hover:bg-gray-100 z-50"
+						class="absolute top-0 right-1 flex items-center justify-center focus:outline-none hover:border-transparent text-gray-700 dark:text-white ml-3 bg-white dark:bg-gray-950 rounded-full p-3 transition hover:bg-gray-100 z-50"
 					>
 						<!-- filter search button -->
 						<img alt="filter" class="w-4 h-4 dark:invert" src={filterIcon} />
 					</button>
 				</div>
-				<button
+				<!-- <button
 					on:click={toggleDark}
 					class="flex items-center justify-center focus:outline-none hover:border-transparent text-gray-700 dark:text-white relative ml-3 rounded-full p-3 transition"
 				>
 					{#if dark}
-						<img class="w-4 h-4 dark:invert" src={sun} alt="" />
+						<img class="w-4 h-4 invert" src={sun} alt="" />
 					{:else}
-						<img class="w-4 h- dark:invert" src={moon} alt="" />
+						<img class="w-4 h-4 invert" src={moon} alt="" />
 					{/if}
-				</button>
+				</button> -->
 				{#if lookUpResults.length}
 					<div
-						class="grid justify-items-center bg-white dark:text-white dark:bg-gray-900/90 top-6 pt-4 rounded-b-lg pb-2 w-[25rem] px-2 h-60 overflow-y-auto overflow-x-hidden absolute z-40"
+						class="grid justify-items-center bg-white dark:text-white dark:bg-gray-950/90 top-6 pt-4 rounded-b-lg pb-2 w-[25rem] px-2 h-60 overflow-y-auto overflow-x-hidden absolute z-40"
 					>
 						{#if lookingUp}
 							<div>
@@ -141,7 +141,7 @@
 									href="/detail/{result.title ? 'movie' : 'tv'}/{result.id}"
 									role="button"
 									tabindex="0"
-									class="flex items-center gap-2 w-full text-gray-800 dark:text-gray-200 hover:bg-gray-500/40 dark:hover:bg-gray-950/40 rounded-lg p-2"
+									class="flex items-center gap-2 w-full text-gray-950 dark:text-gray-200 hover:bg-gray-500/40 dark:hover:bg-gray-950/40 rounded-lg p-2"
 								>
 									{#if result?.backdrop_path}
 										<img
@@ -163,7 +163,7 @@
 												>{result?.release_date || result.first_air_date || 'N/A'}</span
 											>
 											<span
-												class="text-right uppercase text-xs bg-gray-100 text-gray-800 font-semibold py-1 rounded-full px-2"
+												class="text-right uppercase text-xs bg-gray-100 text-gray-950 font-semibold py-1 rounded-full px-2"
 												>{result?.media_type}</span
 											>
 											<div>

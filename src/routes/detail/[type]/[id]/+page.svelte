@@ -6,15 +6,19 @@
 	import Header from '../../../../components/Header.svelte';
 	import { onMount } from 'svelte';
 	import { goto, afterNavigate } from '$app/navigation';
-	import { navigating } from '$app/stores';
 	import { base } from '$app/paths';
 
 	export let data: PageData;
 
-	let previousPage: string = base;
+	let previousPage: any = base;
 
-	afterNavigate(({ from }) => {
-		previousPage = from?.url.pathname || previousPage;
+	afterNavigate(({ from, type }) => {
+		previousPage = JSON.parse(sessionStorage.getItem('previousPage') || 'false');
+		console.log('afternav', type === 'link' && !previousPage);
+		if (type === 'link' && !previousPage) {
+			sessionStorage.setItem('previousPage', JSON.stringify(from?.url.pathname));
+			previousPage = from?.url.pathname;
+		}
 	});
 
 	$: movie = data.movie;
@@ -24,6 +28,8 @@
 	$: type = data.type;
 	$: loading = false;
 	$: loadingMovie = data.loading;
+	$: selection = 'similar';
+
 	onMount(() => {
 		console.log('loading', loadingMovie);
 		console.log('movie', movie);
@@ -35,12 +41,11 @@
 	<meta name="description" content={movie.overview} />
 </svelte:head>
 
-<section class="dark:bg-gray-900">
+<section class="dark:bg-gray-950">
 	<Header showList={false} />
 	<div class="flex justify-center">
-		{$navigating?.to}
 		<button
-			on:click={() => goto($navigating.from)}
+			on:click={() => goto(previousPage)}
 			class="flex items-center justify-center w-10 h-10 transition duration-300 transform dark:text-gray-200 rounded-full shadow-2xl absolute top-5 left-5 z-50 hover:text-gray-100"
 		>
 			<svg
@@ -61,10 +66,10 @@
 	</div>
 	<div class="max-w-full">
 		<div class="mb-4">
-			<VidPlayer title={movie.title} {movie} isMovie={true} />
+			<VidPlayer {movie} isMovie={true} />
 		</div>
 		<div
-			class="relative md:mb-0 w-[95vw] sm:w-[75vw] mx-auto max-w-full flex flex-col mt-20 bg-gray-50 dark:bg-gray-800 p-2 rounded-md"
+			class="relative md:mb-0 w-[95vw] sm:w-[91vw] mx-auto max-w-full flex flex-col mt-20 bg-gray-50 dark:bg-gray-800 p-2 rounded-md"
 		>
 			{#if movie.title !== undefined && !loading}
 				<section class="flex flex-col sm:flex-row items-start gap-4">
@@ -155,22 +160,30 @@
 		</div>
 	</div>
 
-	<div class="ml-20 text-xl text-gray-700 font-bold mt-20 mb-5">
-		<nav class="flex gap-3 font-semibold border" aria-label="Tabs">
+	<div
+		class="w-[95vw] sm:w-[91vw] mx-auto text-xl text-gray-700 font-bold mt-20 mb-5 grid gap-8 p-4"
+	>
+		<nav class="flex gap-1 font-semibold w-fit" aria-label="Tabs">
 			<button
-				class="shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+				class="shrink-0 rounded-full px-4 py-2 text-sm font-medium text-gray-300 hover:text-orange-500"
+				class:bg-white={selection === 'similar'}
+				class:text-gray-950={selection === 'similar'}
+				on:click={() => (selection = 'similar')}
 			>
 				Similar
 			</button>
 
 			<button
-				class="shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+				class="shrink-0 rounded-full px-4 py-2 text-sm font-medium text-gray-300 hover:text-orange-500"
+				class:bg-white={selection === 'recommended'}
+				class:text-gray-950={selection === 'recommended'}
+				on:click={() => (selection = 'recommended')}
 			>
 				Recommended
 			</button>
 		</nav>
+		<MoviesList {similar} />
 	</div>
-	<MoviesList {similar} />
 </section>
 
 <style>

@@ -175,7 +175,7 @@
 				</button>
 				{#if lookUpResults.length}
 					<div
-						class="grid justify-items-center bg-white dark:text-white dark:bg-gray-900/90 top-6 pt-4 rounded-b-lg pb-2 w-[25rem] px-2 h-60 overflow-y-auto overflow-x-hidden absolute z-40"
+						class="grid justify-items-center bg-white dark:text-white dark:bg-gray-950/90 top-6 pt-4 rounded-b-lg pb-2 w-[25rem] px-2 h-60 overflow-y-auto overflow-x-hidden absolute z-40"
 					>
 						{#if lookingUp}
 							<div>

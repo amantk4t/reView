@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { getPopularMovies, searchMultiple } from '../services/Movies.service';
+	import { getPopularMovies, getTrending, searchMultiple } from '../services/Movies.service';
 	import DotLoader from '../components/DotLoader.svelte';
 	import { goto } from '$app/navigation';
 
@@ -9,7 +9,6 @@
 	$: loading = false;
 	$: lookingUp = false;
 	$: latest = {} as any;
-	$: resData = Response;
 
 	let query = '';
 	let lookUpResults: any = [];
@@ -25,10 +24,11 @@
 		const response = await getPopularMovies();
 		loading = false;
 		console.log(response);
-		resData = { ...response.data };
 		movies = [...response.data.results];
-		latest = movies.length ? movies[0] : undefined;
-		console.log('Latest', movies[0]);
+		const response2 = await getTrending();
+		const data = response2.data.results;
+		latest = data.length ? data[0] : undefined;
+		console.log('Latest', data[0]);
 	};
 
 	const lookUpMovies = async (ev: any) => {
@@ -135,12 +135,12 @@
 					bind:value={query}
 					placeholder="What would you like to see?"
 					type="text"
-					class="py-3 pl-12 pr- w-full text-gray-900 dark:bg-gray-900 rounded-full focus-visible:outline-none focus-visible:shadow-lg"
+					class="py-3 pl-12 pr- w-full text-gray-900 dark:text-white dark:bg-gray-950 rounded-full focus-visible:outline-none focus-visible:shadow-lg"
 				/>
 			</div>
 			{#if lookUpResults.length}
 				<div
-					class="grid justify-items-center bg-white dark:text-white dark:bg-gray-900/90 relative -top-5 pt-4 rounded-b-lg pb-2 w-full max-w-xs sm:w-[30rem] px-2 h-60 overflow-y-auto overflow-x-hidden"
+					class="grid justify-items-center bg-white dark:text-white dark:bg-gray-950/90 relative -top-5 pt-4 rounded-b-lg pb-2 w-full max-w-xs sm:w-[30rem] px-2 h-60 overflow-y-auto overflow-x-hidden"
 				>
 					{#if lookingUp}
 						<div>
@@ -229,16 +229,16 @@
 		border-collapse: separate;
 	}
 	.faded.faded-left:after {
-		box-shadow: inset 5rem 0 5rem -1rem hsl(208, 100%, 22%);
+		box-shadow: inset 5rem 0 5rem -1rem #242424;
 	}
 	.faded.faded-right:after {
-		box-shadow: inset -5rem 0 5rem -1rem hsl(208, 100%, 22%);
+		box-shadow: inset -5rem 0 5rem -1rem #242424;
 	}
 	.faded.faded-top:after {
-		box-shadow: inset 0 5rem 5rem -1rem hsl(208, 100%, 22%);
+		box-shadow: inset 0 5rem 5rem -1rem #242424;
 	}
 	.faded.faded-bottom:after {
-		box-shadow: inset 0 -5rem 5rem -1rem hsl(208, 100%, 22%);
+		box-shadow: inset 0 -5rem 5rem -1rem #242424;
 	}
 	main {
 		/* content: '';
@@ -276,7 +276,7 @@
 				transparent 1px,
 				transparent 20px
 			),
-			linear-gradient(90deg, hsl(208, 100%, 22%), hsl(208, 100%, 22%));
+			linear-gradient(90deg, #242424, #242424);
 		/* background: #0006 url($lib/images/background.jpg) fixed; */
 		/* background-blend-mode: overlay; */
 		background-position: center;

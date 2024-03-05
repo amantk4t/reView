@@ -65,7 +65,9 @@
 		const page = e.detail;
 		loading = true;
 		const response = await axios.get(
-			`https://api.themoviedb.org/3/movie/popular?api_key=336d8f817c1d2a54717df29483ea4d8b&language=en-US&page=${page}`
+			`https://api.themoviedb.org/3/movie/popular?api_key=${
+				import.meta.env.VITE_API_KEY
+			}&language=en-US&page=${page}`
 		);
 		loading = false;
 		movies = response.data.results;
@@ -120,7 +122,7 @@
 	/>
 </svelte:head>
 
-<main class="dark:bg-gray-900 min-h-screen">
+<main class="min-h-screen bg-gradient-to-t from-[#181718] via-[#111827] to-[#111718] bg-fixed">
 	<Header on:search={searchMovie} {dark} />
 	<!-- attach prop movie -->
 
@@ -151,5 +153,6 @@
 	* {
 		font-family: 'Fira Sans Condensed', sans-serif;
 		transition: all 0.3s ease;
+		color: #111827;
 	}
 </style>

@@ -8,7 +8,9 @@ export const load = (async ({ params, fetch }) => {
 	try {
 		if (params.id) {
 			const res = await fetch(
-				`https://api.themoviedb.org/3/movie/${params.id}?api_key=336d8f817c1d2a54717df29483ea4d8b&language=en-US`
+				`https://api.themoviedb.org/3/movie/${params.id}?api_key=${
+					import.meta.env.VITE_API_KEY
+				}&language=en-US`
 			);
 			// const resMovie = await fetch(`https://api.vidplay.online/v1/`);
 			// const resMovie = await fetch(`https://filemoonapi.com/api/account/info?key=1l5ftrilhllgwx2bo`);
@@ -24,12 +26,16 @@ export const load = (async ({ params, fetch }) => {
 			console.log('Loading Similar ... ');
 
 			const res2 = await fetch(
-				`https://api.themoviedb.org/3/movie/${params.id}/similar?api_key=336d8f817c1d2a54717df29483ea4d8b&language=en-US&page=1`
+				`https://api.themoviedb.org/3/movie/${params.id}/similar?api_key=${
+					import.meta.env.VITE_API_KEY
+				}&language=en-US&page=1`
 			);
 			console.log('Similar loaded');
 
 			const res3 = await fetch(
-				`https://api.themoviedb.org/3/movie/${params.id}/videos?api_key=336d8f817c1d2a54717df29483ea4d8b&language=en-US`
+				`https://api.themoviedb.org/3/movie/${params.id}/videos?api_key=${
+					import.meta.env.VITE_API_KEY
+				}&language=en-US`
 			);
 			let videos = await res3.json();
 
@@ -49,7 +55,7 @@ export const load = (async ({ params, fetch }) => {
 				loading
 			};
 		}
-		throw error(404, 'Not found');
+		error(404, 'Not found');
 	} catch (error) {
 		console.error(error);
 	}
