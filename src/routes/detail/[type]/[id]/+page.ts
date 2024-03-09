@@ -21,7 +21,7 @@ export const load = (async ({ params, fetch }) => {
 			console.log('Movie loaded');
 			console.log('Converting to JSON ... ');
 
-			const movie = res.json();
+			const movie = await res.json();
 			console.log('Done!', movie);
 			console.log('Loading Similar ... ');
 
