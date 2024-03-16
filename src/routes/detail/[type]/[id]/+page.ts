@@ -4,6 +4,7 @@ import type { PageLoad } from './$types';
 export const load = (async ({ params, fetch }) => {
 	let loading = false;
 	loading = true;
+	let loadingOptions = false;
 	console.log('Loading Movie ... ');
 	try {
 		if (params.id) {
@@ -12,25 +13,10 @@ export const load = (async ({ params, fetch }) => {
 					import.meta.env.VITE_API_KEY
 				}&language=en-US`
 			);
-			// const resMovie = await fetch(`https://api.vidplay.online/v1/`);
-			// const resMovie = await fetch(`https://filemoonapi.com/api/account/info?key=1l5ftrilhllgwx2bo`);
-			// console.log('Vid play res', await resMovie.json());
-			// const resMovie = await fetch(`https://vidsrc.to/embed/movie/${params.id}`);
-			// console.log('Vid play res', resMovie.body);
+			
 			loading = false;
-			console.log('Movie loaded');
-			console.log('Converting to JSON ... ');
-
+			
 			const movie = await res.json();
-			console.log('Done!', movie);
-			console.log('Loading Similar ... ');
-
-			const res2 = await fetch(
-				`https://api.themoviedb.org/3/movie/${params.id}/similar?api_key=${
-					import.meta.env.VITE_API_KEY
-				}&language=en-US&page=1`
-			);
-			console.log('Similar loaded');
 
 			const res3 = await fetch(
 				`https://api.themoviedb.org/3/movie/${params.id}/videos?api_key=${
@@ -39,20 +25,46 @@ export const load = (async ({ params, fetch }) => {
 			);
 			let videos = await res3.json();
 
-			console.log(videos);
+			
 			videos.results = videos.results.filter(
 				({ type, official }: { type: string; official: boolean }) => type === 'Trailer' && official
 			);
 
-			const similar = await res2.json();
+			const res2 = await fetch(
+				`https://api.themoviedb.org/3/movie/${params.id}/reviews?api_key=${
+					import.meta.env.VITE_API_KEY
+				}&language=en-US&page=1`
+			);
+			const reviews = await res2.json()
+
+			console.log("🚀 ~ load ~ reviews:", reviews)
+
+
+			const changeSelection = async (type: 'similar' | 'recommendations') => {
+				loadingOptions = true;
+				const res = await fetch(
+					`https://api.themoviedb.org/3/movie/${params.id}/${type}?api_key=${
+						import.meta.env.VITE_API_KEY
+					}&language=en-US&page=1`
+				);
+				const data = await res.json()
+				console.log(data);
+				loadingOptions = false;
+
+				return data
+			}
+
+			const selectedOption = await changeSelection('similar');
 			return {
 				id: params.id,
 				type: params.type,
 				movie,
-				similar: similar.results,
+				selectedOption: selectedOption.results,
 				videos: videos.results,
-				// movie_video: resMovie,
-				loading
+				loading,
+				reviews: reviews.results,
+				loadingOptions,
+				changeSelection
 			};
 		}
 		error(404, 'Not found');

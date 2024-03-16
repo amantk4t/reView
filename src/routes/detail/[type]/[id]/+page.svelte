@@ -7,6 +7,7 @@
 	import { onMount } from 'svelte';
 	import { goto, afterNavigate } from '$app/navigation';
 	import { base } from '$app/paths';
+	import Reviews from '../../../../components/Reviews.svelte';
 
 	export let data: PageData;
 
@@ -22,13 +23,20 @@
 	});
 
 	$: movie = data.movie;
-	$: similar = data.similar;
-	$: videos = data.videos;
+	$: selectedOption = data.selectedOption;
+	$: reviews = data.reviews;
 	$: id = data.id;
 	$: type = data.type;
-	$: loading = false;
+	$: loadingOptions = data.loadingOptions;
 	$: loadingMovie = data.loading;
 	$: selection = 'similar';
+	
+
+	const changeSelection = async (type: 'similar' | 'recommendations') => {
+		selection = type;
+		selectedOption = (await data.changeSelection(type))?.results;
+	}
+	
 
 	onMount(() => {
 		console.log('loading', loadingMovie);
@@ -71,7 +79,7 @@
 		<div
 			class="relative md:mb-0 w-[95vw] sm:w-[91vw] mx-auto max-w-full flex flex-col mt-20 bg-gray-50 dark:bg-gray-800 p-2 rounded-md"
 		>
-			{#if movie.title !== undefined && !loading}
+			{#if movie.title !== undefined && !loadingMovie}
 				<section class="flex flex-col sm:flex-row items-start gap-4">
 					<img
 						class="w-full sm:w-60 h-60 lg:h-full object-cover rounded-md"
@@ -160,6 +168,10 @@
 		</div>
 	</div>
 
+	<div class="w-[95vw] sm:w-[91vw] mx-auto max-w-full flex flex-col gap-2 mt-20">
+		<Reviews {reviews}/>
+	</div>
+
 	<div
 		class="w-[95vw] sm:w-[91vw] mx-auto text-xl text-gray-700 font-bold mt-20 mb-5 grid gap-8 p-4"
 	>
@@ -168,21 +180,21 @@
 				class="shrink-0 rounded-full px-4 py-2 text-sm font-medium text-gray-300 hover:text-orange-500"
 				class:bg-white={selection === 'similar'}
 				class:text-gray-950={selection === 'similar'}
-				on:click={() => (selection = 'similar')}
+				on:click={() => changeSelection('similar')}
 			>
 				Similar
 			</button>
 
 			<button
 				class="shrink-0 rounded-full px-4 py-2 text-sm font-medium text-gray-300 hover:text-orange-500"
-				class:bg-white={selection === 'recommended'}
-				class:text-gray-950={selection === 'recommended'}
-				on:click={() => (selection = 'recommended')}
+				class:bg-white={selection === 'recommendations'}
+				class:text-gray-950={selection === 'recommendations'}
+				on:click={() => changeSelection('recommendations')}
 			>
 				Recommended
 			</button>
 		</nav>
-		<MoviesList {similar} />
+		<MoviesList {selectedOption} loading={loadingOptions} />
 	</div>
 </section>
 
