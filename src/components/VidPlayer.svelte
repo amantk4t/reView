@@ -9,10 +9,11 @@
 	$: loading = false;
 	$: tmdb_id = movie.id;
 
-	$: src = isMovie
-		? `https://vidsrc.to/embed/movie/${tmdb_id}`
-		: `https://vidsrc.to/embed/tv/${tmdb_id}`;
+	//$: src = isMovie
+	//	? `https://vidsrc.to/embed/movie/${tmdb_id}`
+	//	: `https://vidsrc.to/embed/tv/${tmdb_id}`;
 
+	$: src = `https://multiembed.mov/?video_id=${tmdb_id}&tmdb=1`
 	const loadVideo = async () => {
 		try {
 			loading = true;
