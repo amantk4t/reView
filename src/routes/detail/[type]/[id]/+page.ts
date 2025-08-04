@@ -13,9 +13,9 @@ export const load = (async ({ params, fetch }) => {
 					import.meta.env.VITE_API_KEY
 				}&language=en-US`
 			);
-			
+
 			loading = false;
-			
+
 			const movie = await res.json();
 
 			const res3 = await fetch(
@@ -25,7 +25,6 @@ export const load = (async ({ params, fetch }) => {
 			);
 			let videos = await res3.json();
 
-			
 			videos.results = videos.results.filter(
 				({ type, official }: { type: string; official: boolean }) => type === 'Trailer' && official
 			);
@@ -35,10 +34,9 @@ export const load = (async ({ params, fetch }) => {
 					import.meta.env.VITE_API_KEY
 				}&language=en-US&page=1`
 			);
-			const reviews = await res2.json()
+			const reviews = await res2.json();
 
-			console.log("🚀 ~ load ~ reviews:", reviews)
-
+			console.log('🚀 ~ load ~ reviews:', reviews);
 
 			const changeSelection = async (type: 'similar' | 'recommendations') => {
 				loadingOptions = true;
@@ -47,12 +45,12 @@ export const load = (async ({ params, fetch }) => {
 						import.meta.env.VITE_API_KEY
 					}&language=en-US&page=1`
 				);
-				const data = await res.json()
+				const data = await res.json();
 				console.log(data);
 				loadingOptions = false;
 
-				return data
-			}
+				return data;
+			};
 
 			const selectedOption = await changeSelection('similar');
 			return {

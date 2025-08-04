@@ -13,11 +13,17 @@
 	//	? `https://vidsrc.to/embed/movie/${tmdb_id}`
 	//	: `https://vidsrc.to/embed/tv/${tmdb_id}`;
 
-	$: src = `https://multiembed.mov/?video_id=${tmdb_id}&tmdb=1`
+	$: src = `https://multiembed.mov/?video_id=${tmdb_id}&tmdb=1`;
 	const loadVideo = async () => {
 		try {
 			loading = true;
-			const resMovie = await fetch(src);
+			// const resMovie = await fetch(src);
+			fetch(`/api/multiembed?id=522931`)
+				.then((r) => r.text())
+				.then((html) => {
+					console.log(html);
+				});
+
 			opened = true;
 			const playBtn = document.getElementById('btn-play');
 			playBtn?.click();
@@ -43,7 +49,7 @@
 				<div class="relative w-full h-full">
 					<iframe
 						{title}
-						src={`${src}?autostart=true`}
+						{src}
 						frameborder="0"
 						allowfullscreen
 						allow="autoplay; fullscreen"
