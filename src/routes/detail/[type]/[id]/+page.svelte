@@ -3,11 +3,13 @@
 	import MoviesList from '../../../../components/Movies_List.svelte';
 	import DetailShimmer from '../../../../components/DetailShimmer.svelte';
 	import VidPlayer from '../../../../components/VidPlayer.svelte';
+	import YouTubePlayer from '../../../../components/YouTubePlayer.svelte';
 	import Header from '../../../../components/Header.svelte';
 	import { onMount } from 'svelte';
 	import { goto, afterNavigate } from '$app/navigation';
 	import { base } from '$app/paths';
 	import Reviews from '../../../../components/Reviews.svelte';
+	import { fade, scale } from 'svelte/transition';
 
 	export let data: PageData;
 
@@ -30,13 +32,13 @@
 	$: loadingOptions = data.loadingOptions;
 	$: loadingMovie = data.loading;
 	$: selection = 'similar';
-	
+	$: videos = data.videos;
+	$: showTrailerModal = false;
 
 	const changeSelection = async (type: 'similar' | 'recommendations') => {
 		selection = type;
 		selectedOption = (await data.changeSelection(type))?.results;
-	}
-	
+	};
 
 	onMount(() => {
 		console.log('loading', loadingMovie);
@@ -73,9 +75,50 @@
 		</button>
 	</div>
 	<div class="max-w-full">
-		<div class="mb-4">
-			<VidPlayer {movie} isMovie={true} />
-		</div>
+		{#if videos.length > 0}
+			<div class="mb-4">
+				<VidPlayer {movie} isMovie={true} />
+				<div class="w-[95vw] sm:w-[91vw] max-w-full mx-auto flex justify-center mt-2">
+					<button
+						on:click={() => (showTrailerModal = true)}
+						class="flex items-center gap-2 px-3 py-1 bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-full hover:bg-gray-300 dark:hover:bg-gray-700 transition"
+					>
+						<svg
+							fill="#fff"
+							height="20px"
+							width="20px"
+							version="1.1"
+							id="Layer_1"
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="-271 311.2 256 179.8"
+							xml:space="preserve"
+						>
+							<path
+								d="M-59.1,311.2h-167.8c0,0-44.1,0-44.1,44.1v91.5c0,0,0,44.1,44.1,44.1h167.8c0,0,44.1,0,44.1-44.1v-91.5 C-15,355.3-15,311.2-59.1,311.2z M-177.1,450.3v-98.5l83.8,49.3L-177.1,450.3z"
+							/>
+						</svg>
+						Trailer
+					</button>
+				</div>
+				{#if showTrailerModal}
+					<div class="fixed inset-0 z-50 flex items-center justify-center">
+						<div
+							class="fixed inset-0 z-40 backdrop-blur-sm bg-black bg-opacity-70"
+							on:click={() => (showTrailerModal = false)}
+							in:fade={{ duration: 200 }}
+							out:fade={{ duration: 150 }}
+						/>
+						<div
+							class=" rounded-lg relative max-w-2xl w-full z-50"
+							in:scale={{ duration: 200, start: 0.95 }}
+							out:scale={{ duration: 150, start: 1 }}
+						>
+							<YouTubePlayer {videos} {movie} />
+						</div>
+					</div>
+				{/if}
+			</div>
+		{/if}
 		<div
 			class="relative md:mb-0 w-[95vw] sm:w-[91vw] mx-auto max-w-full flex flex-col mt-20 bg-gray-50 dark:bg-gray-800 p-2 rounded-md"
 		>
@@ -169,7 +212,7 @@
 	</div>
 
 	<div class="w-[95vw] sm:w-[91vw] mx-auto max-w-full flex flex-col gap-2 mt-20">
-		<Reviews {reviews}/>
+		<Reviews {reviews} />
 	</div>
 
 	<div

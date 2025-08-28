@@ -23,7 +23,9 @@ export const load = (async ({ params, fetch }) => {
 					import.meta.env.VITE_API_KEY
 				}&language=en-US`
 			);
+
 			let videos = await res3.json();
+			console.log('🚀 ~ res3:', videos);
 
 			videos.results = videos.results.filter(
 				({ type, official }: { type: string; official: boolean }) => type === 'Trailer' && official
