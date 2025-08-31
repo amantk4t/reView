@@ -9,6 +9,7 @@
 	$: loading = false;
 	$: lookingUp = false;
 	$: latest = {} as any;
+	let showMenu = false;
 
 	let query = '';
 	let lookUpResults: any = [];
@@ -77,11 +78,11 @@
 	<nav
 		class="w-full max-w-full overflow-clip flex items-center sm:p-8 p-4 pt-6 pb-32 sm:pb-12 justify-between relative z-10"
 	>
-		<button class="text-2xl w-1/4">
+		<button class="text-2xl w-1/4 max-sm:w-fit">
 			<a href="/">Re-view</a>
 		</button>
 		<nav
-			class="absolute top-16 flex items-center justify-center gap-8 sm:static text-orange-500 w-full"
+			class="absolute max-sm:hidden top-16 flex items-center justify-center gap-8 sm:static text-orange-500 w-full"
 		>
 			<a
 				class="text-gray-200 font-semibold dark:hover:text-orange-500 hover:text-orange-500 hover:underline underline-offset-4"
@@ -96,12 +97,56 @@
 				href="/home?type=series">Series</a
 			>
 		</nav>
-		<div class="flex items-center gap-3 w-1/4">
+		<div class="flex max-sm:hidden items-center gap-3 w-1/4 max-sm:w-fit justify-end">
 			<button
 				class="bg-gradient-to-br from-orange-500 to-red-500 bg-clip-text text-transparent font-bold text-xl"
 			>
 				Login
 			</button>
+		</div>
+
+		<!-- add a menu containing browser, movies, series and login -->
+		<div class="sm:hidden relative">
+			<button
+				class="p-2 rounded-full text-white focus:outline-none"
+				on:click={() => (showMenu = !showMenu)}
+				aria-label="Open menu"
+			>
+				<svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+				</svg>
+			</button>
+			{#if showMenu}
+				<div
+					class="fixed inset-0 z-40"
+					on:click={() => (showMenu = false)}
+					style="background: transparent;"
+				/>
+				<div
+					class="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-900 rounded-lg shadow-lg z-50 animate-fade-in"
+				>
+					<a
+						href="/home"
+						class="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+						>Browse</a
+					>
+					<a
+						href="/home?type=movies"
+						class="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+						>Movies</a
+					>
+					<a
+						href="/home?type=series"
+						class="block px-4 py-2 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+						>Series</a
+					>
+					<a
+						href="#"
+						class="block px-4 py-2 text-orange-500 font-bold hover:bg-gray-100 dark:hover:bg-gray-800"
+						>Login</a
+					>
+				</div>
+			{/if}
 		</div>
 	</nav>
 	<div class="grid justify-items-center gap-4 relative z-10">
@@ -189,9 +234,9 @@
 														d="m12 17.328-5.403 3.286a.75.75 0 0 1-1.12-.813l1.456-6.155-4.796-4.123a.75.75 0 0 1 .428-1.316l6.303-.517 2.44-5.835a.75.75 0 0 1 1.384 0l2.44 5.835 6.303.517a.75.75 0 0 1 .427 1.316l-4.795 4.123 1.456 6.155a.75.75 0 0 1-1.12.813L12 17.328z"
 														fill="#fff700"
 													/>
-												</svg>
-												{result?.vote_average?.toFixed(1)}
-											</span>
+													{result?.vote_average?.toFixed(1)}
+												</svg></span
+											>
 										</div>
 									</div>
 								</div>
@@ -297,5 +342,19 @@
 		/* Customize the thumb */
 		background-color: #888;
 		border-radius: 5px;
+	}
+
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+			transform: translateY(-10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+	.animate-fade-in {
+		animation: fade-in 0.2s ease;
 	}
 </style>

@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import sun from '$lib/icons/sun.svg';
-	import moon from '$lib/icons/moon.svg';
 	import filterIcon from '$lib/icons/filter.svg';
 	import { getPopularMovies, getPopularSeries, searchMultiple } from '../services/Movies.service';
 	import { page } from '$app/stores';
@@ -73,15 +71,14 @@
 	<div id="header" class="w-full px-1.5 py-4 sm:px-6 lg:px-8">
 		<div class="flex items-center justify-between gap-2 sm:gap-4">
 			<button class="relative z-50" class:ml-12={!showList}>
-				<a href="/" class="text-2xl" class:font-semibold={!showList}>Re-View</a>
+				<a href="/" class="text-2xl max-sm:hidden" class:font-semibold={!showList}>Re-View</a>
 			</button>
 
-			<section class="flex gap-2 items-center relative">
+			<section class="flex flex-1 w-full gap-2 items-center relative">
 				<div class="relative z-50">
 					<label class="sr-only" for="search"> Search </label>
-
 					<input
-						class="h-10 sm:w-[25rem] rounded-full border-none bg-white dark:bg-gray-950 pl-4 pr-10 text-sm shadow-sm dark:text-white transition focus:outline-none focus:ring-2 focus:ring-orange-300 dark:focus:ring-gray-700"
+						class="h-10 sm:w-[25rem] rounded-full border-none bg-white dark:bg-gray-950 pl-4 pr-10 text-sm shadow-sm dark:text-white transition focus:outline-none focus:ring-2 focus:ring-orange-300 dark:focus:ring-gray-700 w-full"
 						id="search"
 						type="search"
 						placeholder="Search movies..."

@@ -47,7 +47,7 @@
 </script>
 
 <svelte:head>
-	<title>Re-view - {movie.original_name || movie.title}</title>
+	<title>Re-view - {movie?.original_name || movie?.title}</title>
 	<meta name="description" content={movie.overview} />
 </svelte:head>
 

@@ -70,10 +70,10 @@
 				</p>
 			</div>
 		</a>
-		<section class="w-[31%] h-96 relative">
-			<div class="bg-orange-300 w-full h-full rounded-3xl" />
+		<section class="sm:w-[31%] w-full h-96 relative">
+			<div class="bg-orange-300 max-sm:hidden w-full h-full rounded-3xl" />
 			<div
-				class="bg-white absolute top-0 left-0 rotate-6 w-full h-full rounded-3xl overflow-clip group"
+				class="bg-white absolute top-0 left-0 sm:rotate-6 w-full h-full rounded-3xl overflow-clip group"
 			>
 				<img
 					src={`https://image.tmdb.org/t/p/original${movies[onDisplay + 1].backdrop_path}`}
@@ -110,7 +110,7 @@
 								<img src={arrow} class="w-5 invert" alt="back_btn" />
 							</button>
 							<p>
-								<span class="text-white">{onDisplay + 2}</span>
+								<span class="text-white">{onDisplay + 1}</span>
 								<span class="text-white">&nbsp;/&nbsp;{movies.length}</span>
 							</p>
 							<button on:click={() => changeCurrentDisplay('n')}>

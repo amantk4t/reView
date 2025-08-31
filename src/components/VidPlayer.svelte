@@ -33,6 +33,14 @@
 			loading = false;
 		}
 	};
+
+	let iframeEl;
+
+	function removeAds() {
+		const doc = iframeEl.contentDocument || iframeEl.contentWindow.document;
+		const ads = doc.querySelectorAll(".ad, [id*='ad']");
+		ads.forEach((ad) => ad.remove());
+	}
 </script>
 
 <div class="relative w-screen sm:h-[80vh] min-h-[500px] max-w-full grid items-center">
@@ -48,6 +56,8 @@
 			<div class="absolute w-full h-full top-0 left-0 z-30 rounded-lg bg-gray-400/50">
 				<div class="relative w-full h-full">
 					<iframe
+						bind:this={iframeEl}
+						on:load={removeAds}
 						{title}
 						{src}
 						frameborder="0"
